@@ -15,6 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { login } from "../redux/features/authSlice";
+import { googleSignIn } from "../redux/features/authSlice";
 import { GoogleLogin } from "react-google-login";
 
 const initialState = {
@@ -60,6 +61,13 @@ const Login = () => {
 
   const googleSuccess = (resp) => {
     console.log("sucess google login ", resp);
+
+    const email = resp?.profileObj?.email;
+    const name = resp?.profileObj?.name;
+    const token = resp?.tokenId;
+    const googleId = resp?.googleId;
+    const result = { email, name, token, googleId };
+    dispatch(googleSignIn({ result, navigate, toast }));
   };
   const googleFailure = (error) => {
     console.log("googleFailure", error);
